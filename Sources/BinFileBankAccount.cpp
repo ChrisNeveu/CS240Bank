@@ -27,7 +27,12 @@ void BinFileBankAccount::deposit(double amount)
 */
 void BinFileBankAccount::withdraw(double amount)
 {
-	super.withdraw(amount);
+	//super.withdraw(amount);
+	if (amount > getBalance())
+	{
+		//throw new WithdrawalException(getBalance(),amount);
+        cout << "Withdrawal amount exceeds balance." << endl;
+	}
 	balance = BinFileBankData.getBalance(accountNumber) - amount;
 	BinFileBankData.setBalance(accountNumber, balance);
 }

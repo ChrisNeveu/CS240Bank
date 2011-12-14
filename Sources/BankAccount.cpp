@@ -11,11 +11,12 @@ BankAccount::BankAccount(int anAccountNumber)
  * @param accountNumber the account number
  * @param amount the amount to withdraw
  */
-void BankAccount::withdraw(double amount) throws WithdrawalException
+void BankAccount::withdraw(double amount)
 {
 	if (amount > getBalance())
 	{
-		throw new WithdrawalException(getBalance(),amount);
+		//throw new WithdrawalException(getBalance(),amount);
+        cout << "Withdrawal amount exceeds balance." << endl;
 	}
 }
 
