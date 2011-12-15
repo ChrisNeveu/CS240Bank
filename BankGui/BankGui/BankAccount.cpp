@@ -8,6 +8,12 @@ BankAccount::BankAccount(int anAccountNumber)
 	accountNumber = anAccountNumber;
 }
 
+BankAccount::BankAccount(int anAccountNumber, double initBalance)
+{
+	accountNumber = anAccountNumber;
+	balance = initBalance;
+}
+
 /*
  * Deposits money into a bank account.
  * @param accountNumber the account number
