@@ -20,6 +20,7 @@ class BankAccount
 		void withdraw(double amount);
 		double getBalance();
 		void setBalance(double value);
+		void setNumber(int accNum);
 		int getNumber();
 		string toString();
 

@@ -74,3 +74,8 @@ string BankAccount::toString()
 	return "account " + accountNumber;
 }
 
+
+void BankAccount::setNumber(int accNum)
+{
+	accountNumber = accNum;
+}

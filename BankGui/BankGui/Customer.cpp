@@ -4,8 +4,8 @@ Customer::Customer(int custNum, int pinNum, int checking, int savings)
 {
 	customerNumber = custNum;
 	pin = pinNum;
-	checkingAccount = new BankAccount(checking);
-	savingsAccount = new BankAccount(savings);
+	checkingAccount.setNumber(checking);
+	savingsAccount.setNumber(savings);
 }
 
 /*
