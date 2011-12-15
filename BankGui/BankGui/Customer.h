@@ -1,7 +1,11 @@
+#ifndef CUSTOMER_H
+#define CUSTOMER_H
+
+#include "BankAccount.h"
+
 /*
  * A bank customer with a checking and savings account.
  */
-
 class Customer
 {
 	public:
@@ -13,3 +17,5 @@ class Customer
 		BankAccount checkingAccount;
 		BankAccount savingsAccount;
 };
+
+#endif
