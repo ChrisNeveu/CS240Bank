@@ -9,8 +9,13 @@
 class Customer
 {
 	public:
+		Customer(int custNum, int pin, double checking, double savings);
 		BankAccount getCheckingAccount();
 		BankAccount getSavingsAccount();
+		int getCustNum();
+		int getPin();
+		int getChecking();
+		int getSavings();
 	protected:
 		int customerNumber;
 		int pin;

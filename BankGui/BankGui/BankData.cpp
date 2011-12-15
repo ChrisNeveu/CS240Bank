@@ -1,15 +1,17 @@
 #include "BankData.h"
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+
+using namespace std;
 
 /*
  * populates the customer
  * records and the accounts.
  */
-void BinFileBankData::init()
+void BankData::init()
 {
-
 	//Initialize filename variables
 	try{
 		bankFileName = "binCustRecords.dat";
@@ -24,26 +26,26 @@ void BinFileBankData::init()
 	{
 		//Read all data
 		ifstream file(bankFileName);
-		custRecords = vector<CustomerRecord>();
+		custRecords = vector<Customer>();
 		int recordSize = 16;
 		string buffer;
 		while(getline(file, buffer))
 		{
 			int custNum;
 			int pin;
-			int checking;
-			int savings;
+			double checking;
+			double savings;
 			file >> custNum;
 			file >> pin;
 			file >> checking;
 			file >> savings;
-			custRecords.push_back(CustomerRecord(custNum, pin, checking, savings));
+			custRecords.push_back(Customer(custNum, pin, checking, savings));
 		}
 		file.close();
 	}
 	catch(exception e)
 	{
-		custRecords = vector<CustomerRecord>();
+		custRecords = vector<Customer>();
    		populateCustRecords();
 	}
 
@@ -51,7 +53,7 @@ void BinFileBankData::init()
 	{
 		//Read all data
 		ifstream file(accountsFileName);
-		accounts = vector<AccountRecord>();
+		accounts = vector<BankAccount>();
 		int recordSize = 12;
 		string buffer;
 		while(getline(file, buffer))
@@ -60,19 +62,19 @@ void BinFileBankData::init()
 			double balance;
 			file >> accNum;
 			file >> balance;
-			accounts.push_back(AccountRecord(accNum, balance));
+			accounts.push_back(BankAccount(accNum, balance));
 		}
 		file.close();
 	}
 	catch(exception e)
 	{
-		accounts = vector<AccountRecord>();
+		accounts = vector<BankAccount>();
    		populateAccounts();
 	}
 
 }
 
-void BinFileBankData::close()
+void BankData::close()
 {
 	try
 	{
@@ -80,7 +82,7 @@ void BinFileBankData::close()
 		int numRecords = custRecords.size();
 		for(int i=0; i < numRecords; i++)
 		{
-			CustomerRecord record = custRecords[i];
+			Customer record = custRecords[i];
 			file << record.getCustNum();
 			file << record.getPin();
 			file << record.getChecking();
@@ -92,7 +94,7 @@ void BinFileBankData::close()
 		numRecords = accounts.size();
 		for(int i = 0; i < numRecords; i++)
 		{
-			AccountRecord record = accounts[i];
+			BankAccount record = accounts[i];
 			file << record.getNumber();
 			file << record.getBalance();
 		}
@@ -130,16 +132,16 @@ void BankData::setBalance(int accNum, double amount)
 /*
  * Populates the customer records array list.
  */
-void Bankdata::populateCustRecords()
+void BankData::populateCustRecords()
 {
 	cout << "Populating customer records" << endl << "acc pin checking savings" << endl;
 	for (int i = 1; i < 10; i++)
 	{
-		custRecords.push_back(new CustomerRecord(i, i*1000 + 2*i%10*100 + 3*i%10*10 + 4*i%10, 100*i+1, 100*i+2));
-		cout << (custRecords.get(i-1).getCustNum() << " "
-		<< custRecords.get(i-1).getPin() << " "
-		<< custRecords.get(i-1).getChecking() << " "
-		<< custRecords.get(i-1).getSavings()) << endl;
+		custRecords.push_back(Customer(i, i*1000 + 2*i%10*100 + 3*i%10*10 + 4*i%10, 100*i+1, 100*i+2));
+		cout << custRecords[i-1].getCustNum() << " "
+		<< custRecords[i-1].getPin() << " "
+		<< custRecords[i-1].getChecking() << " "
+		<< custRecords[i-1].getSavings() << endl;
 	}
 
 }
@@ -154,7 +156,7 @@ void BankData::populateAccounts()
 	{
 		for (int j = 1; j<3; j++)
 		{
-			accounts.push_back(new Account(100*i+j,0));
+			accounts.push_back(BankAccount(100*i+j,0));
 			cout << 100*i+j << " " << 0 << endl;
 		}
 	}

@@ -18,6 +18,6 @@ class BankData
 	protected:
 		vector<BankAccount> accounts;
 		vector<Customer> custRecords;
-		String bankFileName;
-		String accountsFileName;
+		string bankFileName;
+		string accountsFileName;
 };

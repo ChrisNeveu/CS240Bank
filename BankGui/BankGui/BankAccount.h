@@ -1,8 +1,8 @@
-#ifndef BANKACCOUNT_H
-#define BANKACCOUNT_H
+//#ifndef BANKACCOUNT_H
+//#define BANKACCOUNT_H
 
 #include <string>
-#include "Customer.h"
+//#include "Customer.h"
 
 using namespace std;
 
@@ -14,6 +14,7 @@ class BankAccount
 {
 	public:
 		BankAccount(int anAccountNumber);
+		BankAccount(int anAccountNumber, double initbalance);
 		void deposit(double amount);
 		void withdraw(double amount);
 		double getBalance();
@@ -29,4 +30,4 @@ class BankAccount
 
 };
 
-#endif
+//#endif

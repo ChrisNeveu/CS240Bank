@@ -1,5 +1,13 @@
 #include "Customer.h"
 
+BankAccount::BankAccount(int custNum, int pinNum, double checking, double savings)
+{
+	customerNumber = custNum;
+	pin = pinNum;
+	checkingAccount.balance = checking;
+	savingsAccount.balance = savings;
+}
+
 /*
  * Gets the checking account of this customer.
  * @return the checkingAccount
@@ -34,4 +42,13 @@ int Customer::getPin()
 int Customer::getCustNum()
 {
 	return custNum;
+}
+
+int getChecking()
+{
+	return checkingAccount.getNumber();
+}
+int getSavings()
+{
+	return savingsAccount.getNumber();
 }
