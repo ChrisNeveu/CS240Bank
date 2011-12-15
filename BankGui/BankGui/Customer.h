@@ -9,7 +9,7 @@
 class Customer
 {
 	public:
-		Customer(int custNum, int pin, double checking, double savings);
+		Customer(int custNum, int pin, int checking, int savings);
 		BankAccount getCheckingAccount();
 		BankAccount getSavingsAccount();
 		int getCustNum();

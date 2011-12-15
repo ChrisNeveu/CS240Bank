@@ -1,8 +1,6 @@
 #include "BankData.h"
-#include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -25,7 +23,7 @@ void BankData::init()
 	try
 	{
 		//Read all data
-		ifstream file(bankFileName);
+		ifstream file("binCustRecords.dat");
 		custRecords = vector<Customer>();
 		int recordSize = 16;
 		string buffer;
@@ -52,7 +50,7 @@ void BankData::init()
 	try
 	{
 		//Read all data
-		ifstream file(accountsFileName);
+		ifstream file("binAccts.dat");
 		accounts = vector<BankAccount>();
 		int recordSize = 12;
 		string buffer;
@@ -78,7 +76,7 @@ void BankData::close()
 {
 	try
 	{
-		ofstream file = ofstream(bankFileName);
+		ofstream file("binCustRecords.dat");
 		int numRecords = custRecords.size();
 		for(int i=0; i < numRecords; i++)
 		{
@@ -90,15 +88,15 @@ void BankData::close()
 		}
 		file.close();
 
-		file = ofstream(accountsFileName);
+		ofstream afile("binAccts.dat");
 		numRecords = accounts.size();
 		for(int i = 0; i < numRecords; i++)
 		{
 			BankAccount record = accounts[i];
-			file << record.getNumber();
-			file << record.getBalance();
+			afile << record.getNumber();
+			afile << record.getBalance();
 		}
-		file.close();
+		afile.close();
 	}
 	catch(exception e)
 	{

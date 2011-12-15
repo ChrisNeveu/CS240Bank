@@ -13,6 +13,7 @@ using namespace std;
 class BankAccount
 {
 	public:
+		BankAccount(){};
 		BankAccount(int anAccountNumber);
 		BankAccount(int anAccountNumber, double initbalance);
 		void deposit(double amount);

@@ -1,5 +1,8 @@
 #include <vector>
+#include <iostream>
 #include "Customer.h"
+
+using namespace std;
 
 /*
 * A bank contains a collection of customer records
@@ -18,6 +21,6 @@ class BankData
 	protected:
 		vector<BankAccount> accounts;
 		vector<Customer> custRecords;
-		string bankFileName;
-		string accountsFileName;
+		char * bankFileName;
+		char * accountsFileName;
 };
