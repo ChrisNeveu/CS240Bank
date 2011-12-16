@@ -1,20 +1,25 @@
-﻿Build started 12/15/2011 3:40:12 PM.
-     1>Project "C:\Users\rDarge\documents\visual studio 2010\Projects\BankGui\BankGui\BankGui.vcxproj" on node 2 (build target(s)).
+﻿Build started 12/15/2011 11:40:05 PM.
+     1>Project "C:\Users\Ryan\Documents\Visual Studio 2010\Projects\BankGui\BankGui\BankGui.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Touching "Debug\BankGui.unsuccessfulbuild".
+         Creating "Debug\BankGui.unsuccessfulbuild" because "AlwaysCreate" was specified.
        GenerateTargetFrameworkMonikerAttribute:
        Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
        ClCompile:
          All outputs are up-to-date.
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr:pure /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BankGui.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt BankGui.cpp /clr:nostdlib 
-         BankGui.cpp
-     1>c:\users\rdarge\documents\visual studio 2010\projects\bankgui\bankgui\Form1.h(484): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\rdarge\documents\visual studio 2010\projects\bankgui\bankgui\Form1.h(459): warning C4101: 'e' : unreferenced local variable
-     1>c:\users\rdarge\documents\visual studio 2010\projects\bankgui\bankgui\Form1.h(579): error C2664: 'void System::Windows::Forms::Control::Text::set(System::String ^)' : cannot convert parameter 1 from 'double' to 'System::String ^'
-                 No user-defined-conversion operator available, or
-                 No standard conversion exists from the boxed form of the arithmetic type to the target type
-     1>Done Building Project "C:\Users\rDarge\documents\visual studio 2010\Projects\BankGui\BankGui\BankGui.vcxproj" (build target(s)) -- FAILED.
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       CoreResGen:
+         All outputs are up-to-date.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         BankGui.vcxproj -> C:\Users\Ryan\Documents\Visual Studio 2010\Projects\BankGui\Debug\BankGui.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\BankGui.unsuccessfulbuild".
+         Touching "Debug\BankGui.lastbuildstate".
+     1>Done Building Project "C:\Users\Ryan\Documents\Visual Studio 2010\Projects\BankGui\BankGui\BankGui.vcxproj" (build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.52
+Time Elapsed 00:00:00.15

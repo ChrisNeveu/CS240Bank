@@ -369,39 +369,39 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 			 reload();
 		}
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 1/decimal;
+			 input = input * 10 + 1;
 			 textIn->Text = textIn->Text + "1";
 		}
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 2/decimal;
+			 input = input * 10 + 2;
 			 textIn->Text = textIn->Text + "2";
 		}
 private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 3/decimal;
+			 input = input * 10 + 3;
 			 textIn->Text = textIn->Text + "3";
 		}
 private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 4/decimal;
+			 input = input * 10 + 4;
 			 textIn->Text = textIn->Text + "4";
 		}
 private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 5/decimal;
+			 input = input * 10 + 5;
 			 textIn->Text = textIn->Text + "5";
 		}
 private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 6/decimal;
+			 input = input * 10 + 6;
 			 textIn->Text = textIn->Text + "6";
 		}
 private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 7/decimal;
+			 input = input * 10 + 7;
 			 textIn->Text = textIn->Text + "7";
 		}
 private: System::Void button8_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 8/decimal;
+			 input = input * 10 + 8;
 			 textIn->Text = textIn->Text + "8";
 		}
 private: System::Void button9_Click(System::Object^  sender, System::EventArgs^  e) {
-			 input = input * 10 + 9/decimal;
+			 input = input * 10 + 9;
 			 textIn->Text = textIn->Text + "9";
 		}
 private: System::Void button0_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -410,7 +410,7 @@ private: System::Void button0_Click(System::Object^  sender, System::EventArgs^ 
 		}
 private: System::Void btnDot_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if(decimal == 1)
-				decimal = 10;
+				decimal = -1;
 			 textIn->Text = textIn->Text + ".";
 		}
 private: System::Void btnClear_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -461,7 +461,7 @@ private: System::Void btnTop_Click(System::Object^  sender, System::EventArgs^  
 					//textOut->Text = e->ToString();
 					textOut->Text = "No connection could be made to the server."; 
 					confirmation = -1;
-					state = 7;
+					state = 7; 
 					reload();
 				}
 				if(confirmation == -2) //If the server is reached and an invalid number or pin is found, receive -1
@@ -491,18 +491,20 @@ private: System::Void btnTop_Click(System::Object^  sender, System::EventArgs^  
 			}
 			else if (state == 4) //Logged in: Goto Withdraw
 			{
-				state = 6;
+				state = 5;
 				reload();
 			}
 			else if (state == 5) //Withdraw: Submit
 			{
 				bw->Write('W');			//W is for withdrawing
-				bw->Write(input);
+				//Convert input into a double
+				double temp = input/decimal;
+				bw->Write(temp);//bw->Write(input);
 				int response = br->ReadInt32();
 				if(response == 1) //Withdrawal Accepted
 				{
 					state = 4;
-					balance = balance - input;
+					balance = balance - input/(double)decimal;
 				}
 				else if(response == 2) //Withdrawal Refused, NSF
 					state = 8;
@@ -512,13 +514,17 @@ private: System::Void btnTop_Click(System::Object^  sender, System::EventArgs^  
 			else if (state == 6) //Deposit: Submit
 			{
 				bw->Write('D');
-				bw->Write(input);
+				//Convert input into a double
+				double temp = input/decimal;
+				bw->Write(temp);
 				int response = br->ReadInt32();
 				if(response == 1) //Deposit Accepted
 				{
 					state = 4;
-					balance = balance + input;
+					balance = balance + input/(double)decimal;
 				}
+				else if(response == 2)	//Deposit Refused
+					state = 7;
 				reload();
 			}
 			else if (state == 7) //Error or logged out: Restart
@@ -528,8 +534,29 @@ private: System::Void btnTop_Click(System::Object^  sender, System::EventArgs^  
 				custPin = 0;
 				reload();
 			}
+			else if (state == 8) //NSF for withdrawal
+			{
+				state = 4;
+				reload();
+			}	
 		}
 private: System::Void btnMid_Click(System::Object^  sender, System::EventArgs^  e) {
+			 if(state == 4) //Logged in: Deposit
+			 {
+				 state = 6;
+				 reload();
+			 }
+			 else if(state == 5) //Deposit: Cancel
+			 {
+				 state = 4;
+				 reload();
+			 }
+			 else if(state == 6) //Withdraw: Cancel
+			 {
+				 state = 4;
+				 reload();
+			 }
+			 
 		}
 private: System::Void btnBot_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if(state > 2) //If we have connected to the server...probably should disconnect
@@ -550,6 +577,19 @@ private: System::Void reload(){
 			 btnDot ->Enabled = false;
 			 input = 0;
 			 decimal = 1;
+			 textIn ->Text = "";
+			 button1 -> Enabled = true;
+			 button2 -> Enabled = true;
+			 button3 -> Enabled = true;
+			 button4 -> Enabled = true;
+			 button5 -> Enabled = true;
+			 button6 -> Enabled = true;
+			 button7 -> Enabled = true;
+			 button8 -> Enabled = true;
+			 button9 -> Enabled = true;
+			 button0 -> Enabled = true;
+			 btnDot->Enabled = true;
+			 btnClear->Enabled = true;
 
 			 //Update labels
 			 if(state == 1)
@@ -577,14 +617,26 @@ private: System::Void reload(){
 			 if(state == 4)
 			 {
 				 char* temp = new char[20];
-				 temp = itoa(confirmation, temp, 10);
+				 temp = itoa((int)balance, temp, 10);
 				 textOut->Text = textOut->Text + gcnew String(temp);
-				 textOut ->Text = ("Connection Established. \nCurrent Balance:{1} \nSelect an option from below", balance);
+				 textOut ->Text = ("Connection Established. \nCurrent Balance:{1} \nSelect an option from below", gcnew String(temp));
 				 btnTop -> Text = "Withdraw";
 				 btnMid -> Text = "Deposit";
 				 btnBot -> Text = "Exit";
+				 button1 -> Enabled = false;
+				 button2 -> Enabled = false;
+				 button3 -> Enabled = false;
+				 button4 -> Enabled = false;
+				 button5 -> Enabled = false;
+				 button6 -> Enabled = false;
+				 button7 -> Enabled = false;
+				 button8 -> Enabled = false;
+				 button9 -> Enabled = false;
+				 button0 -> Enabled = false;
+				 btnDot->Enabled = false;
+				 btnClear->Enabled = false;
 			 }
-			 if(state == 5)
+			 if(state == 6)
 			 {
 				 textOut ->Text = "Enter amount to deposit \nPress enter to submit";
 				 btnDot ->Enabled = true;
@@ -592,7 +644,7 @@ private: System::Void reload(){
 				 btnMid -> Text = "Cancel";
 				 btnBot -> Text = "Exit";
 			 }
-			 if(state == 6)
+			 if(state == 5)
 			 {
 				 textOut ->Text = "Enter amount to withdraw \nPress enter to submit";
 				 btnDot ->Enabled = true;
@@ -616,7 +668,9 @@ private: System::Void reload(){
 			 }
 		}
 private: System::Void textIn_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-			 if(decimal >= 1)
+			 if(decimal = -1)
+				 decimal = 10;
+			 else if(decimal >= 10)
 				 decimal = decimal * 10;
 		}
 };
