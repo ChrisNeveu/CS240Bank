@@ -1,4 +1,10 @@
 /*
+Ryan Darge
+CS 240 FALL 2011
+BANK GUI CLIENT
+
+The following documentation is meant primary for development maintenance
+=========================================================================
 Q: What is decimal used for? What is that I don't even?
 A: Decimal is used to incrementially divide the value entered after the decimal mark,
    and is only used when making a withdrawal or deposit. It works like this:
@@ -12,19 +18,43 @@ A: Decimal is used to incrementially divide the value entered after the decimal 
      >> See textIn_TextChanged() towards the bottom of the method declarations
 
 
-Q: Submitting and Depositing
-A: As the client is set up currently, once it is connected and everything's good, it will send
-   a character, either 'W' or 'D', denoting what operation it is attempting (withdrawal or deposit)
-   followed by a double consisting of the balance to be withdrawn or deposited.
-   It expects confirmation as follows:
-	Gets response code 1 - Accepted
-	Gets response code 2 - Withdrawal Refused, Insufficient Funds
-	Gets any other response code: Error, logout.
-   The functionality for these operations is in btnTop_Click() (since that is the button to submit any withdrawals
-   or deposits).
+Q: SOCKETS
+A: Here's the lowdown:
+	On connection, before receiving confirmation, the client sends two integers
+		So Far:
+			< custNum
+			< custPin
+	It expects to receive a confirmation at this point, -2 as an double for bad account details,
+	-1 is reserved for socket errors. If the account is valid, send back the balance
+		So Far:
+			< custNum
+			< custPin
+			> balance, or -2 for error
+	Next up come any possible chain of withdrawals or deposits. The client sends a character,
+	'W' or 'D', for withdrawal or deposit, respectively, followed by the amount for said transaction.
+	It expects a single int response, signifying whether or not the transaction is valid (1 = YES! 2 = Nope.)
+		So Far: (Example transactions added)
+			< custNum
+			< custPin
+			> 1000				Let's assume the balance is 1000.00
 
-   I hope this wasn't a waste of time.
-   -Ryan
+			< 'W'				Withdrawal
+			< 200.00			of 200.00 
+			> 1					Accepted!
+
+			< 'D'				Deposit
+			< 150.00			of 150.00
+			> 1					Accepted!
+
+			< 'W'				Withdrawal
+			< 1000.00			of 1000.00?!
+			> 2					Insufficient funds (950.00 Remaining)
+
+	There aren't any close-socket procedures clientside that I can think of to add.
+	
+	I hope this wasn't a waste of time.
+   -Ryan Darge
+	ryan.darge@gmail.com
 */
 
 #pragma once
@@ -454,6 +484,8 @@ private: System::Void btnTop_Click(System::Object^  sender, System::EventArgs^  
 					netStream = gcnew NetworkStream(clientSocket);		
 					br = gcnew BinaryReader(netStream);
 					bw = gcnew BinaryWriter(netStream);			
+					bw->Write(custNum);
+					bw->Write(custPin);
 					confirmation = br ->ReadDouble();
 				}
 				catch(SocketException^ e)
@@ -592,7 +624,7 @@ private: System::Void reload(){
 			 btnClear->Enabled = true;
 
 			 //Update labels
-			 if(state == 1)
+			 if(state == 1)  //Login Screen - Entering customer number
 			 {
 				 textOut ->Text = "Enter your bank account number; \nPress enter to continue";
 				 textIn ->Text = "";
@@ -600,7 +632,7 @@ private: System::Void reload(){
 				 btnMid ->Text = "";
 				 btnBot ->Text = "Exit";
 			 }
-			 if(state == 2)
+			 if(state == 2) //Login Screen - Entering PIN number
 			 {
 				 textOut ->Text = "Enter your bank PIN number; \nPress enter to login";
 				 textIn ->Text = "";
@@ -609,17 +641,17 @@ private: System::Void reload(){
 				 btnMid ->Text = "";
 				 btnBot ->Text = "Exit";
 			 }
-			 if(state == 3)
+			 if(state == 3) //Attempting to connect to server
 			 {
 				 textOut ->Text = "Attempting to establish \nconnection to server...";
 				 textIn -> Text = "";
 			 }
-			 if(state == 4)
+			 if(state == 4) //Logged In Screen
 			 {
 				 char* temp = new char[20];
 				 temp = itoa((int)balance, temp, 10);
-				 textOut->Text = textOut->Text + gcnew String(temp);
-				 textOut ->Text = ("Connection Established. \nCurrent Balance:{1} \nSelect an option from below", gcnew String(temp));
+				 //textOut->Text = textOut->Text + gcnew String(temp);
+				 textOut ->Text = ("Connection Established.\r\nCurrent Balance:" + gcnew String(temp));
 				 btnTop -> Text = "Withdraw";
 				 btnMid -> Text = "Deposit";
 				 btnBot -> Text = "Exit";
@@ -636,31 +668,31 @@ private: System::Void reload(){
 				 btnDot->Enabled = false;
 				 btnClear->Enabled = false;
 			 }
-			 if(state == 6)
+			 if(state == 6) //Deposit 
 			 {
-				 textOut ->Text = "Enter amount to deposit \nPress enter to submit";
+				 textOut ->Text = "Enter amount to deposit\r\nPress enter to submit";
 				 btnDot ->Enabled = true;
 				 btnTop -> Text = "Submit";
 				 btnMid -> Text = "Cancel";
 				 btnBot -> Text = "Exit";
 			 }
-			 if(state == 5)
+			 if(state == 5) //Withdraw
 			 {
-				 textOut ->Text = "Enter amount to withdraw \nPress enter to submit";
+				 textOut ->Text = "Enter amount to withdraw\r\nPress enter to submit";
 				 btnDot ->Enabled = true;
 				 btnTop -> Text = "Submit";
 				 btnMid -> Text = "Cancel";
 				 btnBot -> Text = "Exit";
 			 }
-			 if(state == 7)
+			 if(state == 7) //Error Screen (textOut updated at time of error, see btnTop for most situations)
 			 {
 				 btnTop -> Text = "Restart";
 				 btnMid -> Text = "";
 				 btnBot -> Text = "Exit";
 			 }
-			 if(state == 8)
+			 if(state == 8) //NSF ERROR Screen - Occurs when not enough funds are available for withdrawal.
 			 {
-				 textOut -> Text = "Error: Insufficient Funds \nSelect an option from below";
+				 textOut -> Text = "Error: Insufficient Funds\r\nSelect an option from below";
 				 state = 4;
 				 btnTop -> Text = "Withdraw";
 				 btnMid -> Text = "Deposit";
@@ -668,7 +700,7 @@ private: System::Void reload(){
 			 }
 		}
 private: System::Void textIn_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-			 if(decimal = -1)
+			 if(decimal == -1)
 				 decimal = 10;
 			 else if(decimal >= 10)
 				 decimal = decimal * 10;
